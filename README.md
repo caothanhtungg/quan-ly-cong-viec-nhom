@@ -87,9 +87,3 @@ http://localhost/task_management
 - `config/database.example.php`: mau cau hinh database
 - `database/schema.sql`: script tao database
 - `config/constants.php`: cau hinh `BASE_URL`
-
-## Hinh anh
-
-So do tong quan du an:
-
-- `anh1.drawio.png`
