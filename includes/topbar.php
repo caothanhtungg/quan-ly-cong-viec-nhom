@@ -11,16 +11,23 @@ $notifications = get_recent_notifications($conn, (int)$user['id'], 8);
 
 $currentUrl = $_SERVER['REQUEST_URI'] ?? base_url('/');
 ?>
-<header class="topbar d-flex justify-content-between align-items-center px-4 py-3 bg-white border-bottom">
-    <div>
-        <h5 class="mb-0 fw-bold"><?= e(APP_NAME) ?></h5>
-        <small class="text-muted"><?= e($pageTitle ?? '') ?></small>
+<header class="topbar d-flex justify-content-between align-items-center gap-3 px-3 px-lg-4 py-3">
+    <div class="d-flex align-items-center gap-3">
+        <button type="button" class="app-chrome-btn d-lg-none js-sidebar-toggle" aria-label="Open navigation">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <div class="topbar-titles">
+            <div class="topbar-title"><?= e(APP_NAME) ?></div>
+            <small class="topbar-subtitle"><?= e($pageTitle ?? '') ?></small>
+        </div>
     </div>
 
-    <div class="d-flex align-items-center gap-3">
+    <div class="d-flex align-items-center gap-2 gap-lg-3">
         <div class="dropdown">
-            <button class="btn btn-outline-secondary position-relative" data-bs-toggle="dropdown">
-                Thông báo
+            <button class="app-chrome-btn position-relative" data-bs-toggle="dropdown">
+                <i class="bi bi-bell-fill"></i>
+                <span class="d-none d-md-inline">Thong bao</span>
                 <?php if ($unreadCount > 0): ?>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-danger">
                         <?= e($unreadCount) ?>
@@ -28,24 +35,22 @@ $currentUrl = $_SERVER['REQUEST_URI'] ?? base_url('/');
                 <?php endif; ?>
             </button>
 
-            <div class="dropdown-menu dropdown-menu-end p-0" style="width: 360px;">
+            <div class="dropdown-menu dropdown-menu-end p-0 notification-menu">
                 <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
-                    <strong>Thông báo</strong>
+                    <strong>Thong bao</strong>
                     <form method="POST" action="<?= e(base_url('/notification/mark_all_read.php')) ?>" class="m-0">
                         <?= csrf_field() ?>
                         <input type="hidden" name="return" value="<?= e($currentUrl) ?>">
-                        <button type="submit" class="btn btn-link btn-sm p-0 text-decoration-none">Đánh dấu đã đọc</button>
+                        <button type="submit" class="btn btn-link btn-sm p-0 text-decoration-none">Danh dau da doc</button>
                     </form>
                 </div>
 
-                <div style="max-height: 380px; overflow-y: auto;">
+                <div class="notification-menu-body">
                     <?php if (empty($notifications)): ?>
-                        <div class="px-3 py-3 text-muted">Chưa có thông báo nào.</div>
+                        <div class="px-3 py-3 text-muted">Chua co thong bao nao.</div>
                     <?php else: ?>
                         <?php foreach ($notifications as $notification): ?>
-                            <?php
-                                $targetUrl = notification_target_url($notification, $user['role']);
-                            ?>
+                            <?php $targetUrl = notification_target_url($notification, $user['role']); ?>
                             <form method="POST" action="<?= e(base_url('/notification/mark_read.php')) ?>" class="m-0">
                                 <?= csrf_field() ?>
                                 <input type="hidden" name="id" value="<?= e($notification['id']) ?>">
@@ -63,14 +68,20 @@ $currentUrl = $_SERVER['REQUEST_URI'] ?? base_url('/');
             </div>
         </div>
 
-        <div class="text-end">
-            <div class="fw-semibold"><?= e($user['full_name'] ?? '') ?></div>
-            <small class="text-muted text-uppercase"><?= e($user['role'] ?? '') ?></small>
+        <div class="user-chip text-start">
+            <span class="user-chip-icon"><i class="bi bi-person-circle"></i></span>
+            <div class="user-chip-meta">
+                <div class="fw-semibold"><?= e($user['full_name'] ?? '') ?></div>
+                <small><?= e(strtoupper($user['role'] ?? '')) ?></small>
+            </div>
         </div>
 
         <form method="POST" action="<?= e(base_url('/auth/logout.php')) ?>" class="m-0">
             <?= csrf_field() ?>
-            <button type="submit" class="btn btn-outline-danger btn-sm">Đăng xuất</button>
+            <button type="submit" class="btn btn-outline-danger btn-sm app-logout-btn">
+                <i class="bi bi-box-arrow-right"></i>
+                <span class="d-none d-md-inline">Dang xuat</span>
+            </button>
         </form>
     </div>
 </header>

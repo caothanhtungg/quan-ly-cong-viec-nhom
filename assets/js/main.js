@@ -1,6 +1,44 @@
-console.log('Task Management System loaded');
-
 document.addEventListener('DOMContentLoaded', function () {
+    document.body.classList.add('app-ready');
+
+    document.querySelectorAll('.page-content > *').forEach((section, index) => {
+        section.classList.add('page-reveal');
+        section.style.setProperty('--reveal-delay', `${Math.min(index * 70, 420)}ms`);
+    });
+
+    const sidebarToggleButtons = document.querySelectorAll('.js-sidebar-toggle');
+    const sidebarCloseButtons = document.querySelectorAll('.js-sidebar-close');
+    const sidebarBackdrop = document.querySelector('.js-sidebar-backdrop');
+    const sidebarLinks = document.querySelectorAll('.sidebar-menu .nav-link');
+    const closeSidebar = () => document.body.classList.remove('sidebar-open');
+    const openSidebar = () => document.body.classList.add('sidebar-open');
+
+    sidebarToggleButtons.forEach((button) => {
+        button.addEventListener('click', openSidebar);
+    });
+
+    sidebarCloseButtons.forEach((button) => {
+        button.addEventListener('click', closeSidebar);
+    });
+
+    if (sidebarBackdrop) {
+        sidebarBackdrop.addEventListener('click', closeSidebar);
+    }
+
+    sidebarLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth < 992) {
+                closeSidebar();
+            }
+        });
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 992) {
+            closeSidebar();
+        }
+    });
+
     const previewButtons = document.querySelectorAll('.js-task-preview-btn');
 
     previewButtons.forEach((button) => {
@@ -25,14 +63,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             setText('previewTaskTitle', data.title || '');
-            setText('previewTaskDescription', data.description || 'Không có mô tả');
+            setText('previewTaskDescription', data.description || 'Khong co mo ta');
             setText('previewAssignedName', data.assignedName || '');
             setText('previewCreatorName', data.creatorName || '');
             setText('previewStartDate', data.startDate || '');
             setText('previewDueDate', data.dueDate || '');
             setText('previewProgressText', (data.progress || '0') + '%');
-            setText('previewLatestUpdate', data.latestUpdate || 'Chưa có cập nhật tiến độ');
-            setText('previewLatestSubmission', data.latestSubmission || 'Chưa có bài nộp');
+            setText('previewLatestUpdate', data.latestUpdate || 'Chua co cap nhat tien do');
+            setText('previewLatestSubmission', data.latestSubmission || 'Chua co bai nop');
 
             setHtml(
                 'previewPriorityBadge',
@@ -105,9 +143,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 const href = this.getAttribute('href') || '';
                 const formId = this.dataset.confirmForm || '';
-                const message = this.dataset.confirmMessage || 'Bạn có chắc muốn thực hiện thao tác này không?';
+                const message = this.dataset.confirmMessage || 'Ban co chac muon thuc hien thao tac nay khong?';
                 const confirmClass = this.dataset.confirmClass || 'btn-danger';
-                const confirmText = this.dataset.confirmText || 'Đồng ý';
+                const confirmText = this.dataset.confirmText || 'Dong y';
 
                 confirmMessageEl.textContent = message;
                 confirmActionEl.className = 'btn ' + confirmClass;
