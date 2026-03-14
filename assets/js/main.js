@@ -39,6 +39,25 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+        button.addEventListener('click', function () {
+            const wrapper = this.closest('.auth-input-wrap');
+            const input = wrapper ? wrapper.querySelector('[data-password-input]') : null;
+
+            if (!input) {
+                return;
+            }
+
+            const isPassword = input.getAttribute('type') === 'password';
+            input.setAttribute('type', isPassword ? 'text' : 'password');
+
+            const icon = this.querySelector('i');
+            if (icon) {
+                icon.className = isPassword ? 'bi bi-eye-slash' : 'bi bi-eye';
+            }
+        });
+    });
+
     const previewButtons = document.querySelectorAll('.js-task-preview-btn');
 
     previewButtons.forEach((button) => {
