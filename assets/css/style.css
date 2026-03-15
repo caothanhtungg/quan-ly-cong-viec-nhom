@@ -890,9 +890,16 @@ body.sidebar-open .app-sidebar-backdrop {
     background: rgba(255, 255, 255, 0.82);
 }
 
-.auth-input[type="password"]::-ms-reveal,
+.auth-input[type="password"]::-ms-reveal {
+    display: none;
+    visibility: hidden;
+    pointer-events: none;
+}
+
 .auth-input[type="password"]::-ms-clear {
     display: none;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .auth-input-icon,

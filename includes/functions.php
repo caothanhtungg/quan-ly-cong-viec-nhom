@@ -45,6 +45,19 @@ function base_url($path = '')
     return BASE_URL . $path;
 }
 
+function asset_url($path)
+{
+    $normalizedPath = '/' . ltrim((string)$path, '/');
+    $assetUrl = base_url($normalizedPath);
+    $assetFile = dirname(__DIR__) . str_replace('/', DIRECTORY_SEPARATOR, $normalizedPath);
+
+    if (is_file($assetFile)) {
+        return $assetUrl . '?v=' . filemtime($assetFile);
+    }
+
+    return $assetUrl;
+}
+
 function normalize_internal_path($path, $fallback = null)
 {
     $fallback = $fallback ?? base_url('/');

@@ -39,6 +39,43 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    const suppressNativePasswordReveal = (input) => {
+        if (!input || input.getAttribute('type') !== 'password') {
+            return;
+        }
+
+        if (input.value === '') {
+            delete input.dataset.nativeRevealSuppressed;
+            return;
+        }
+
+        if (input.dataset.nativeRevealSuppressed === 'true') {
+            return;
+        }
+
+        const selectionStart = input.selectionStart;
+        const selectionEnd = input.selectionEnd;
+
+        // Edge/Chromium removes its built-in reveal button after script-driven input updates.
+        input.value = input.value;
+
+        if (typeof selectionStart === 'number' && typeof selectionEnd === 'number') {
+            input.setSelectionRange(selectionStart, selectionEnd);
+        }
+
+        input.dataset.nativeRevealSuppressed = 'true';
+    };
+
+    document.querySelectorAll('[data-password-input]').forEach((input) => {
+        input.addEventListener('focus', () => {
+            suppressNativePasswordReveal(input);
+        });
+
+        input.addEventListener('input', () => {
+            suppressNativePasswordReveal(input);
+        });
+    });
+
     document.querySelectorAll('[data-password-toggle]').forEach((button) => {
         button.addEventListener('click', function () {
             const wrapper = this.closest('.auth-input-wrap');
@@ -50,10 +87,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const isPassword = input.getAttribute('type') === 'password';
             input.setAttribute('type', isPassword ? 'text' : 'password');
+            this.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
 
             const icon = this.querySelector('i');
             if (icon) {
                 icon.className = isPassword ? 'bi bi-eye-slash' : 'bi bi-eye';
+            }
+
+            if (!isPassword) {
+                delete input.dataset.nativeRevealSuppressed;
+                suppressNativePasswordReveal(input);
             }
         });
     });
