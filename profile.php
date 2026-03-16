@@ -74,7 +74,7 @@ require_once __DIR__ . '/includes/sidebar.php';
 
         <div class="row g-4">
             <div class="col-lg-5">
-                <div class="card section-card">
+                <div class="card section-card app-form-shell">
                     <div class="card-body p-4">
                         <h4 class="fw-bold mb-3">Thông tin cá nhân</h4>
 
@@ -104,7 +104,7 @@ require_once __DIR__ . '/includes/sidebar.php';
                             </div>
                         <?php endif; ?>
 
-                        <form method="POST" class="row g-3">
+                        <form method="POST" class="row g-3 app-form-grid">
                             <?= csrf_field() ?>
                             <div class="col-12">
                                 <label class="form-label">Mật khẩu hiện tại</label>

@@ -193,6 +193,12 @@ if ($rejectedStmt !== false) {
     }
 }
 
+$memberMetrics = [
+    ['label' => 'Đang thực hiện', 'count' => $inProgressCount, 'class' => 'bg-primary'],
+    ['label' => 'Đã nộp', 'count' => $submittedCount, 'class' => 'bg-warning'],
+    ['label' => 'Hoàn thành', 'count' => $completedCount, 'class' => 'bg-success'],
+];
+
 require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../includes/sidebar.php';
 ?>
@@ -203,192 +209,200 @@ require_once __DIR__ . '/../includes/sidebar.php';
     <main class="page-content">
         <?php require_once __DIR__ . '/../includes/flash.php'; ?>
 
-        <div class="mb-4">
-            <h3 class="fw-bold mb-1">Xin chào, <?= e($user['full_name']) ?></h3>
-            <p class="text-muted mb-0">Tổng quan công việc cá nhân của bạn</p>
-        </div>
+        <div class="dashboard-shell">
+            <section class="dashboard-hero">
+                <div class="dashboard-hero-grid">
+                    <div class="dashboard-hero-copy">
+                        <span class="dashboard-kicker">Member Workspace</span>
+                        <h3>Giữ nhịp công việc cá nhân</h3>
+                        <p>
+                            Xin chào, <?= e($user['full_name']) ?>. Dashboard này ưu tiên việc đọc nhanh khối lượng đang mở,
+                            deadline gần và các bài nộp cần làm lại để bạn tập trung đúng chỗ.
+                        </p>
+                        <div class="dashboard-hero-actions">
+                            <a href="<?= e(base_url('/member/tasks/index.php')) ?>" class="btn btn-light">Xem công việc</a>
+                            <a href="<?= e(base_url('/profile.php')) ?>" class="btn btn-outline-light">Hồ sơ cá nhân</a>
+                        </div>
+                    </div>
 
-        <div class="row g-3 mb-4">
-            <div class="col-md-4 col-xl-2">
+                    <div class="dashboard-hero-side">
+                        <div class="dashboard-hero-metric">
+                            <span>Tỷ lệ hoàn thành</span>
+                            <strong><?= e($completionRate) ?>%</strong>
+                        </div>
+                        <div class="dashboard-hero-metric">
+                            <span>Bài nộp chờ duyệt</span>
+                            <strong><?= e($pendingReviewCount) ?></strong>
+                        </div>
+                        <div class="dashboard-hero-metric">
+                            <span>Task sắp đến hạn</span>
+                            <strong><?= e($dueSoonCount) ?></strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="dashboard-stat-grid">
                 <div class="card stat-card">
                     <div class="card-body">
                         <div class="stat-label">Tổng task</div>
                         <div class="stat-value"><?= e($totalTasks) ?></div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-4 col-xl-2">
                 <div class="card stat-card">
                     <div class="card-body">
                         <div class="stat-label">Đang thực hiện</div>
                         <div class="stat-value"><?= e($inProgressCount) ?></div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-4 col-xl-2">
                 <div class="card stat-card">
                     <div class="card-body">
                         <div class="stat-label">Đã nộp</div>
                         <div class="stat-value"><?= e($submittedCount) ?></div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-4 col-xl-2">
                 <div class="card stat-card">
                     <div class="card-body">
                         <div class="stat-label">Hoàn thành</div>
                         <div class="stat-value text-success"><?= e($completedCount) ?></div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-4 col-xl-2">
                 <div class="card stat-card">
                     <div class="card-body">
                         <div class="stat-label">Quá hạn</div>
                         <div class="stat-value text-danger"><?= e($overdueCount) ?></div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-4 col-xl-2">
                 <div class="card stat-card">
                     <div class="card-body">
                         <div class="stat-label">Cần xử lý lại</div>
                         <div class="stat-value text-warning"><?= e($latestRejectedCount) ?></div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </section>
 
-        <div class="row g-3 mb-4">
-            <div class="col-md-4">
-                <div class="card quick-card h-100">
-                    <div class="card-body">
-                        <div class="card-title">Tỉ lệ hoàn thành</div>
-                        <div class="stat-value text-success"><?= e($completionRate) ?>%</div>
-                        <div class="progress mt-3" style="height: 8px;">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: <?= e($completionRate) ?>%"></div>
+            <section class="dashboard-main-grid">
+                <div class="dashboard-stack">
+                    <div class="card section-card dashboard-panel">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="dashboard-panel-title">Nhịp xử lý hiện tại</h5>
+                            <p class="dashboard-panel-copy mb-0">Cân bằng giữa task đang làm, đang chờ review và đã hoàn thành.</p>
                         </div>
-                        <div class="text-muted mt-2"><?= e($completedCount) ?> / <?= e($totalTasks) ?> task da xong</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card quick-card h-100">
-                    <div class="card-body">
-                        <div class="card-title">Sắp đến hạn</div>
-                        <div class="stat-value text-danger"><?= e($dueSoonCount) ?></div>
-                        <div class="text-muted mt-2">Task cần xử lý trong 2 ngày tới</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card quick-card h-100">
-                    <div class="card-body">
-                        <div class="card-title">Bài nộp đang chờ duyệt</div>
-                        <div class="stat-value text-warning"><?= e($pendingReviewCount) ?></div>
-                        <div class="text-muted mt-2">Tính theo phiên bản mới nhất</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row g-4">
-            <div class="col-lg-4">
-                <div class="card section-card">
-                    <div class="card-header bg-white border-0 pt-4 px-4">
-                        <h5 class="mb-0 fw-bold">Công việc ưu tiên</h5>
-                    </div>
-                    <div class="card-body px-4">
-                        <?php if (empty($priorityTasks)): ?>
-                            <p class="text-muted mb-0">Không có công việc nào.</p>
-                        <?php else: ?>
-                            <?php foreach ($priorityTasks as $item): ?>
-                                <?php $isOverdue = is_task_overdue($item['status'], $item['due_date']); ?>
-                                <div class="quick-list-item <?= $isOverdue ? 'deadline-overdue' : 'deadline-soon' ?>">
-                                    <div class="fw-semibold"><?= e($item['title']) ?></div>
-                                    <div class="small text-muted">Deadline: <?= e(format_date($item['due_date'])) ?></div>
-                                    <div class="small text-muted">Tiến độ: <?= e($item['progress_percent']) ?>%</div>
-                                    <div class="mt-1">
-                                        <span class="badge <?= e(priority_badge($item['priority'])) ?>">
-                                            <?= e(priority_text($item['priority'])) ?>
-                                        </span>
-                                        <span class="badge <?= e(task_status_badge($item['status'], $item['due_date'])) ?>">
-                                            <?= e(task_status_text($item['status'], $item['due_date'])) ?>
-                                        </span>
+                        <div class="card-body">
+                            <?php foreach ($memberMetrics as $metric): ?>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between small mb-1">
+                                        <span><?= e($metric['label']) ?></span>
+                                        <span><?= e($metric['count']) ?> task</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar <?= e($metric['class']) ?>" role="progressbar" style="width: <?= e(memberPercentOf($metric['count'], $totalTasks)) ?>%"></div>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
-                        <?php endif; ?>
+                            <div class="dashboard-progress-note">
+                                <?= e($overdueCount) ?> task quá hạn, <?= e($latestRejectedCount) ?> bài nộp cần chỉnh sửa và nộp lại.
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-lg-4">
-                <div class="card section-card">
-                    <div class="card-header bg-white border-0 pt-4 px-4">
-                        <h5 class="mb-0 fw-bold">Lịch sử task gần đây</h5>
-                    </div>
-                    <div class="card-body px-4">
-                        <?php if (empty($recentTaskHistory)): ?>
-                            <p class="text-muted mb-0">Chưa có lịch sử task nào.</p>
-                        <?php else: ?>
-                            <?php foreach ($recentTaskHistory as $item): ?>
-                                <div class="quick-list-item">
-                                    <div class="fw-semibold">
-                                        <?= e($item['event_title']) ?>
-                                        <span class="badge <?= e(task_history_badge($item['event_type'])) ?> ms-2">
-                                            <?= e(task_history_text($item['event_type'])) ?>
-                                        </span>
+                    <div class="card section-card dashboard-panel">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="dashboard-panel-title">Công việc ưu tiên</h5>
+                            <p class="dashboard-panel-copy mb-0">Danh sách chưa hoàn thành, sắp theo độ ưu tiên và deadline.</p>
+                        </div>
+                        <div class="card-body">
+                            <?php if (empty($priorityTasks)): ?>
+                                <p class="text-muted mb-0">Không có công việc nào.</p>
+                            <?php else: ?>
+                                <?php foreach ($priorityTasks as $item): ?>
+                                    <?php $isOverdue = is_task_overdue($item['status'], $item['due_date']); ?>
+                                    <div class="quick-list-item <?= $isOverdue ? 'deadline-overdue' : 'deadline-soon' ?>">
+                                        <div class="fw-semibold"><?= e($item['title']) ?></div>
+                                        <div class="small text-muted">Deadline: <?= e(format_date($item['due_date'])) ?></div>
+                                        <div class="small text-muted">Tiến độ: <?= e($item['progress_percent']) ?>%</div>
+                                        <div class="mt-1">
+                                            <span class="badge <?= e(priority_badge($item['priority'])) ?>">
+                                                <?= e(priority_text($item['priority'])) ?>
+                                            </span>
+                                            <span class="badge <?= e(task_status_badge($item['status'], $item['due_date'])) ?>">
+                                                <?= e(task_status_text($item['status'], $item['due_date'])) ?>
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div class="small text-muted">
-                                        <?= e($item['task_title']) ?><?= !empty($item['actor_name']) ? ' - ' . e($item['actor_name']) : '' ?>
-                                    </div>
-                                    <?php if (!empty($item['event_description'])): ?>
-                                        <div class="small"><?= e($item['event_description']) ?></div>
-                                    <?php endif; ?>
-                                    <div class="small text-muted"><?= e(format_datetime($item['created_at'])) ?></div>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-lg-4">
-                <div class="card section-card">
-                    <div class="card-header bg-white border-0 pt-4 px-4">
-                        <h5 class="mb-0 fw-bold">Bài nộp bị từ chối</h5>
-                    </div>
-                    <div class="card-body px-4">
-                        <?php if (empty($rejectedSubmissions)): ?>
-                            <p class="text-muted mb-0">Không có bài nộp nào bị từ chối.</p>
-                        <?php else: ?>
-                            <?php foreach ($rejectedSubmissions as $item): ?>
-                                <div class="quick-list-item">
-                                    <div class="fw-semibold"><?= e($item['task_title']) ?></div>
-                                    <div class="small text-muted">
-                                        <?= e(submission_version_text($item['version_no'] ?? 1)) ?> - <?= e($item['file_name']) ?>
+                <div class="dashboard-stack">
+                    <div class="card section-card dashboard-panel">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="dashboard-panel-title">Lịch sử task gần đây</h5>
+                            <p class="dashboard-panel-copy mb-0">Theo dõi những thay đổi mới nhất để không bỏ sót cập nhật từ leader.</p>
+                        </div>
+                        <div class="card-body">
+                            <?php if (empty($recentTaskHistory)): ?>
+                                <p class="text-muted mb-0">Chưa có lịch sử task nào.</p>
+                            <?php else: ?>
+                                <?php foreach ($recentTaskHistory as $item): ?>
+                                    <div class="quick-list-item">
+                                        <div class="fw-semibold">
+                                            <?= e($item['event_title']) ?>
+                                            <span class="badge <?= e(task_history_badge($item['event_type'])) ?> ms-2">
+                                                <?= e(task_history_text($item['event_type'])) ?>
+                                            </span>
+                                        </div>
+                                        <div class="small text-muted">
+                                            <?= e($item['task_title']) ?><?= !empty($item['actor_name']) ? ' - ' . e($item['actor_name']) : '' ?>
+                                        </div>
+                                        <?php if (!empty($item['event_description'])): ?>
+                                            <div class="small"><?= e($item['event_description']) ?></div>
+                                        <?php endif; ?>
+                                        <div class="small text-muted"><?= e(format_datetime($item['created_at'])) ?></div>
                                     </div>
-                                    <?php if (!empty($item['leader_comment'])): ?>
-                                        <div class="small"><?= e($item['leader_comment']) ?></div>
-                                    <?php endif; ?>
-                                    <div class="small text-muted mb-2"><?= e(format_datetime($item['reviewed_at'])) ?></div>
-                                    <a href="<?= e(base_url('/member/tasks/submit_file.php?id=' . $item['task_id'])) ?>" class="btn btn-sm btn-outline-danger">
-                                        Nộp lai
-                                    </a>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+                <div class="dashboard-stack">
+                    <div class="card section-card dashboard-panel">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="dashboard-panel-title">Bài nộp bị từ chối</h5>
+                            <p class="dashboard-panel-copy mb-0">Những việc cần sửa và nộp lại để không làm ngắt mạch hoàn thành task.</p>
+                        </div>
+                        <div class="card-body">
+                            <?php if (empty($rejectedSubmissions)): ?>
+                                <p class="text-muted mb-0">Không có bài nộp nào bị từ chối.</p>
+                            <?php else: ?>
+                                <?php foreach ($rejectedSubmissions as $item): ?>
+                                    <div class="quick-list-item">
+                                        <div class="fw-semibold"><?= e($item['task_title']) ?></div>
+                                        <div class="small text-muted">
+                                            <?= e(submission_version_text($item['version_no'] ?? 1)) ?> - <?= e($item['file_name']) ?>
+                                        </div>
+                                        <?php if (!empty($item['leader_comment'])): ?>
+                                            <div class="small"><?= e($item['leader_comment']) ?></div>
+                                        <?php endif; ?>
+                                        <div class="small text-muted mb-2"><?= e(format_datetime($item['reviewed_at'])) ?></div>
+                                        <a href="<?= e(base_url('/member/tasks/submit_file.php?id=' . $item['task_id'])) ?>" class="btn btn-sm btn-outline-danger">
+                                            Nộp lại
+                                        </a>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
 

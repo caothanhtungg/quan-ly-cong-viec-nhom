@@ -93,7 +93,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
     <main class="page-content">
         <?php require_once __DIR__ . '/../../includes/flash.php'; ?>
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="app-page-head d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h3 class="fw-bold mb-1">Quản lý công việc</h3>
                 <p class="text-muted mb-0">Danh sách công việc của nhóm bạn</p>
@@ -103,9 +103,9 @@ require_once __DIR__ . '/../../includes/sidebar.php';
             </a>
         </div>
 
-        <div class="card section-card mb-4">
+        <div class="card section-card app-filter-shell mb-4">
             <div class="card-body">
-                <form method="GET" class="row g-3">
+                <form method="GET" class="row g-3 app-filter-form">
                     <div class="col-md-5">
                         <label class="form-label">Tìm kiếm</label>
                         <input type="text" name="keyword" class="form-control" value="<?= e($keyword) ?>" placeholder="Nhập tên công việc">

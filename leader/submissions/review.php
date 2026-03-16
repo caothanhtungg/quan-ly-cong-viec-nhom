@@ -208,10 +208,10 @@ require_once __DIR__ . '/../../includes/sidebar.php';
     <main class="page-content">
         <?php require_once __DIR__ . '/../../includes/flash.php'; ?>
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="app-page-head d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h3 class="fw-bold mb-1">Duyệt bài nộp</h3>
-                <p class="text-muted mb-0">
+                <p class="text-muted mb-0 app-page-copy">
                     <?= e($submission['task_title']) ?> - <?= e($submission['member_name']) ?> - <?= e(submission_version_text($submission['version_no'] ?? 1)) ?>
                 </p>
             </div>
@@ -220,7 +220,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
 
         <div class="row g-4">
             <div class="col-lg-5">
-                <div class="card section-card">
+                <div class="card section-card app-form-shell">
                     <div class="card-body p-4">
                         <h5 class="fw-bold mb-3">Thông tin bài nộp</h5>
 
@@ -252,7 +252,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
             </div>
 
             <div class="col-lg-7">
-                <div class="card section-card">
+                <div class="card section-card app-form-shell">
                     <div class="card-body p-4">
                         <h5 class="fw-bold mb-3">Xử lý bài nộp</h5>
 
@@ -266,7 +266,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                             </div>
                         <?php endif; ?>
 
-                        <form method="POST">
+                        <form method="POST" class="app-form-grid">
                             <?= csrf_field() ?>
                             <div class="mb-3">
                                 <label class="form-label">Nhận xét leader</label>
@@ -291,7 +291,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                                 Lưu kết quả duyệt
                             </button>
 
-                            <div class="mt-3 text-muted">
+                            <div class="mt-3 text-muted app-form-note">
                                 <small>
                                     Nếu duyệt: task sẽ chuyển sang <strong>Hoàn thành</strong>.<br>
                                     Nếu từ chối: task sẽ quay về <strong>Đang thực hiện</strong>.

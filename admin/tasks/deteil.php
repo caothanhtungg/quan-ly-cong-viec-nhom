@@ -85,7 +85,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
     <main class="page-content">
         <?php require_once __DIR__ . '/../../includes/flash.php'; ?>
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="app-page-head d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h3 class="fw-bold mb-1"><?= e($task['title']) ?></h3>
                 <p class="text-muted mb-0">Chi tiết công việc toàn hệ thống</p>
@@ -223,7 +223,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                         <span class="badge text-bg-light"><?= e(count($comments)) ?> bình luận</span>
                     </div>
                     <div class="card-body px-4">
-                        <form method="POST" action="<?= e(base_url('/task_comments/store.php')) ?>" class="mb-4">
+                        <form method="POST" action="<?= e(base_url('/task_comments/store.php')) ?>" class="mb-4 app-inline-form">
                             <?= csrf_field() ?>
                             <input type="hidden" name="task_id" value="<?= e($id) ?>">
                             <input type="hidden" name="redirect_to" value="<?= e(task_detail_url_for_role('admin', $id) . '#task-comments') ?>">

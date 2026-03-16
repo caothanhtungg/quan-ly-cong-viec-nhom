@@ -70,14 +70,14 @@ require_once __DIR__ . '/../../includes/sidebar.php';
     <main class="page-content">
         <?php require_once __DIR__ . '/../../includes/flash.php'; ?>
 
-        <div class="mb-4">
+        <div class="app-page-head mb-4">
             <h3 class="fw-bold mb-1">Nhật ký hoạt động</h3>
             <p class="text-muted mb-0">Admin theo dõi biến động trong hệ thống</p>
         </div>
 
-        <div class="card section-card mb-4">
+        <div class="card section-card app-filter-shell mb-4">
             <div class="card-body">
-                <form method="GET" class="row g-3">
+                <form method="GET" class="row g-3 app-filter-form">
                     <div class="col-md-6">
                         <label class="form-label">Tìm kiếm</label>
                         <input type="text" name="keyword" class="form-control"

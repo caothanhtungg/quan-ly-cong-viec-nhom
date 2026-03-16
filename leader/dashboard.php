@@ -18,10 +18,37 @@ if (empty($user['team_id'])) {
         <?php require_once __DIR__ . '/../includes/topbar.php'; ?>
         <main class="page-content">
             <?php require_once __DIR__ . '/../includes/flash.php'; ?>
-            <div class="card section-card">
-                <div class="card-body p-4">
-                    <h3 class="fw-bold">Dashboard Leader</h3>
-                    <p class="mb-0">Bạn chưa được gán vào nhóm nào.</p>
+            <div class="dashboard-shell">
+                <section class="dashboard-hero">
+                    <div class="dashboard-hero-grid">
+                        <div class="dashboard-hero-copy">
+                            <span class="dashboard-kicker">Leader Workspace</span>
+                            <h3>Bạn chưa có nhóm để điều phối</h3>
+                            <p>
+                                Tài khoản hiện chưa được gán vào team nào, nên chưa thể hiển thị tiến độ công việc,
+                                bài nộp hay hiệu suất thành viên.
+                            </p>
+                        </div>
+
+                        <div class="dashboard-hero-side">
+                            <div class="dashboard-hero-metric">
+                                <span>Nhóm được gán</span>
+                                <strong>0</strong>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="card section-card dashboard-panel">
+                    <div class="card-header bg-white border-0">
+                        <h5 class="dashboard-panel-title">Cần xử lý</h5>
+                        <p class="dashboard-panel-copy mb-0">Liên hệ admin để được gán nhóm trước khi quản lý task.</p>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-0 text-muted">
+                            Sau khi được gán team, dashboard sẽ tự hiển thị số liệu thành viên, tiến độ task và bài nộp cần duyệt.
+                        </p>
+                    </div>
                 </div>
             </div>
         </main>
@@ -229,6 +256,13 @@ if ($featureReady) {
     }
 }
 
+$leaderMetrics = [
+    ['label' => 'Chưa bắt đầu', 'count' => $notStartedCount, 'class' => 'bg-secondary'],
+    ['label' => 'Đang thực hiện', 'count' => $inProgressCount, 'class' => 'bg-primary'],
+    ['label' => 'Đã nộp', 'count' => $submittedCount, 'class' => 'bg-warning'],
+    ['label' => 'Hoàn thành', 'count' => $completedCount, 'class' => 'bg-success'],
+];
+
 require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../includes/sidebar.php';
 ?>
@@ -239,255 +273,223 @@ require_once __DIR__ . '/../includes/sidebar.php';
     <main class="page-content">
         <?php require_once __DIR__ . '/../includes/flash.php'; ?>
 
-        <div class="mb-4">
-            <h3 class="fw-bold mb-1">Xin chào, <?= e($user['full_name']) ?></h3>
-            <p class="text-muted mb-0">Tổng quan công việc và bài nộp của nhóm bạn</p>
-        </div>
+        <div class="dashboard-shell">
+            <section class="dashboard-hero">
+                <div class="dashboard-hero-grid">
+                    <div class="dashboard-hero-copy">
+                        <span class="dashboard-kicker">Leader Workspace</span>
+                        <h3>Giữ nhịp vận hành của nhóm</h3>
+                        <p>
+                            Xin chào, <?= e($user['full_name']) ?>. Dashboard này ưu tiên ba việc:
+                            nhìn tiến độ chung, xác định task cần can thiệp và xử lý nhanh các bài nộp đang chờ duyệt.
+                        </p>
+                        <div class="dashboard-hero-actions">
+                            <a href="<?= e(base_url('/leader/tasks/create.php')) ?>" class="btn btn-light">Tạo task mới</a>
+                            <a href="<?= e(base_url('/leader/tasks/index.php')) ?>" class="btn btn-outline-light">Xem task</a>
+                            <a href="<?= e(base_url('/leader/submissions/index.php')) ?>" class="btn btn-outline-light">Bài nộp</a>
+                        </div>
+                    </div>
 
-        <div class="row g-3 mb-4">
-            <div class="col-md-4 col-xl-2">
+                    <div class="dashboard-hero-side">
+                        <div class="dashboard-hero-metric">
+                            <span>Tỷ lệ hoàn thành</span>
+                            <strong><?= e($completionRate) ?>%</strong>
+                        </div>
+                        <div class="dashboard-hero-metric">
+                            <span>Bài nộp chờ duyệt</span>
+                            <strong><?= e($pendingReviewCount) ?></strong>
+                        </div>
+                        <div class="dashboard-hero-metric">
+                            <span>Task sắp đến hạn</span>
+                            <strong><?= e($dueSoonCount) ?></strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="dashboard-stat-grid">
                 <div class="card stat-card">
                     <div class="card-body">
-                        <div class="stat-label">Thành viên</div>
+                        <div class="stat-label">Thành viên active</div>
                         <div class="stat-value"><?= e($memberCount) ?></div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-4 col-xl-2">
                 <div class="card stat-card">
                     <div class="card-body">
                         <div class="stat-label">Tổng task</div>
                         <div class="stat-value"><?= e($totalTasks) ?></div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-4 col-xl-2">
                 <div class="card stat-card">
                     <div class="card-body">
                         <div class="stat-label">Chưa bắt đầu</div>
                         <div class="stat-value"><?= e($notStartedCount) ?></div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-4 col-xl-2">
                 <div class="card stat-card">
                     <div class="card-body">
                         <div class="stat-label">Đang thực hiện</div>
                         <div class="stat-value"><?= e($inProgressCount) ?></div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-4 col-xl-2">
                 <div class="card stat-card">
                     <div class="card-body">
                         <div class="stat-label">Đã nộp</div>
                         <div class="stat-value"><?= e($submittedCount) ?></div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-4 col-xl-2">
                 <div class="card stat-card">
                     <div class="card-body">
                         <div class="stat-label">Hoàn thành</div>
                         <div class="stat-value text-success"><?= e($completedCount) ?></div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </section>
 
-        <div class="row g-3 mb-4">
-            <div class="col-md-4">
-                <div class="card quick-card">
-                    <div class="card-body">
-                        <div class="card-title">Task quá hạn</div>
-                        <div class="stat-value text-danger"><?= e($overdueCount) ?></div>
-                        <div class="text-muted">Can ưu tiên kiem tra ngay</div>
+            <section class="dashboard-main-grid">
+                <div class="dashboard-stack">
+                    <div class="card section-card dashboard-panel">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="dashboard-panel-title">Tổng quan theo trạng thái</h5>
+                            <p class="dashboard-panel-copy mb-0">Đọc nhanh tiến độ và mức độ rủi ro của toàn team.</p>
+                        </div>
+                        <div class="card-body">
+                            <?php foreach ($leaderMetrics as $metric): ?>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between small mb-1">
+                                        <span><?= e($metric['label']) ?></span>
+                                        <span><?= e($metric['count']) ?> task</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar <?= e($metric['class']) ?>" role="progressbar" style="width: <?= e(leaderPercentOf($metric['count'], $totalTasks)) ?>%"></div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                            <div class="dashboard-progress-note">
+                                <?= e($overdueCount) ?> task quá hạn, <?= e($dueSoonCount) ?> task cần xử lý trong 2 ngày tới.
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-md-4">
-                <div class="card quick-card">
-                    <div class="card-body">
-                        <div class="card-title">Bài nộp chờ duyệt</div>
-                        <div class="stat-value text-warning"><?= e($pendingReviewCount) ?></div>
-                        <div class="text-muted">Tính theo phiên bản mới nhất</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card quick-card">
-                    <div class="card-body">
-                        <div class="card-title">Tao nhanh</div>
-                        <div class="d-flex gap-2 mt-3">
-                            <a href="<?= e(base_url('/leader/tasks/create.php')) ?>" class="btn btn-primary">Tao task</a>
-                            <a href="<?= e(base_url('/leader/submissions/index.php')) ?>" class="btn btn-outline-warning">Xem bài nộp</a>
+                    <div class="card section-card dashboard-panel">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="dashboard-panel-title">Theo dõi thành viên</h5>
+                            <p class="dashboard-panel-copy mb-0">So sánh khối lượng, tiến độ và điểm nghẽn của từng member.</p>
+                        </div>
+                        <div class="card-body">
+                            <?php if (empty($memberPerformance)): ?>
+                                <p class="text-muted mb-0">Chưa có thành viên nào trong nhóm.</p>
+                            <?php else: ?>
+                                <?php foreach ($memberPerformance as $item): ?>
+                                    <div class="quick-list-item">
+                                        <div class="fw-semibold"><?= e($item['full_name']) ?></div>
+                                        <div class="small text-muted">
+                                            Task: <?= e($item['total_tasks']) ?> |
+                                            Hoàn thành: <?= e(leaderPercentOf((int)$item['completed_tasks'], (int)$item['total_tasks'])) ?>% |
+                                            Quá hạn: <?= e($item['overdue_tasks']) ?>
+                                        </div>
+                                        <div class="small text-muted">Tiến độ trung bình: <?= e((int)round((float)($item['avg_progress'] ?? 0))) ?>%</div>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="row g-4">
-            <div class="col-lg-4">
-                <div class="card section-card h-100">
-                    <div class="card-header bg-white border-0 pt-4 px-4">
-                        <h5 class="mb-0 fw-bold">Tổng quan theo trạng thái</h5>
-                    </div>
-                    <div class="card-body px-4">
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between small mb-1">
-                                <span>Tỉ lệ hoàn thành</span>
-                                <span><?= e($completionRate) ?>%</span>
-                            </div>
-                            <div class="progress" style="height: 8px;">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: <?= e($completionRate) ?>%"></div>
-                            </div>
+                <div class="dashboard-stack">
+                    <div class="card section-card dashboard-panel">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="dashboard-panel-title">Công việc cần theo sát</h5>
+                            <p class="dashboard-panel-copy mb-0">Danh sách task chưa hoàn thành được sắp theo deadline gần nhất.</p>
                         </div>
-
-                        <?php $leaderMetrics = [
-                            ['label' => 'Chưa bắt đầu', 'count' => $notStartedCount, 'class' => 'bg-secondary'],
-                            ['label' => 'Đang thực hiện', 'count' => $inProgressCount, 'class' => 'bg-primary'],
-                            ['label' => 'Đã nộp', 'count' => $submittedCount, 'class' => 'bg-warning'],
-                            ['label' => 'Hoàn thành', 'count' => $completedCount, 'class' => 'bg-success'],
-                        ]; ?>
-                        <?php foreach ($leaderMetrics as $metric): ?>
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between small mb-1">
-                                    <span><?= e($metric['label']) ?></span>
-                                    <span><?= e($metric['count']) ?></span>
-                                </div>
-                                <div class="progress" style="height: 8px;">
-                                    <div class="progress-bar <?= e($metric['class']) ?>" role="progressbar" style="width: <?= e(leaderPercentOf($metric['count'], $totalTasks)) ?>%"></div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-
-                        <div class="small text-muted">Sắp đến hạn trong 2 ngày: <?= e($dueSoonCount) ?> task</div>
+                        <div class="card-body">
+                            <?php if (empty($upcomingTasks)): ?>
+                                <p class="text-muted mb-0">Không có công việc nào.</p>
+                            <?php else: ?>
+                                <?php foreach ($upcomingTasks as $item): ?>
+                                    <?php $isOverdue = is_task_overdue($item['status'], $item['due_date']); ?>
+                                    <div class="quick-list-item <?= $isOverdue ? 'deadline-overdue' : 'deadline-soon' ?>">
+                                        <div class="fw-semibold"><?= e($item['title']) ?></div>
+                                        <div class="small text-muted">Thành viên: <?= e($item['member_name']) ?></div>
+                                        <div class="small text-muted">Deadline: <?= e(format_date($item['due_date'])) ?></div>
+                                        <div class="mt-1">
+                                            <span class="badge <?= e(task_status_badge($item['status'], $item['due_date'])) ?>">
+                                                <?= e(task_status_text($item['status'], $item['due_date'])) ?>
+                                            </span>
+                                            <span class="badge <?= e(priority_badge($item['priority'])) ?>">
+                                                <?= e(priority_text($item['priority'])) ?>
+                                            </span>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-lg-4">
-                <div class="card section-card h-100">
-                    <div class="card-header bg-white border-0 pt-4 px-4">
-                        <h5 class="mb-0 fw-bold">Theo dõi thành viên</h5>
-                    </div>
-                    <div class="card-body px-4">
-                        <?php if (empty($memberPerformance)): ?>
-                            <p class="text-muted mb-0">Chưa có thành viên nào trong nhóm.</p>
-                        <?php else: ?>
-                            <?php foreach ($memberPerformance as $item): ?>
-                                <div class="quick-list-item">
-                                    <div class="fw-semibold"><?= e($item['full_name']) ?></div>
-                                    <div class="small text-muted">
-                                        Task: <?= e($item['total_tasks']) ?> |
-                                        Hoàn thành: <?= e(leaderPercentOf((int)$item['completed_tasks'], (int)$item['total_tasks'])) ?>% |
-                                        Quá hạn: <?= e($item['overdue_tasks']) ?>
+                <div class="dashboard-stack">
+                    <div class="card section-card dashboard-panel">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="dashboard-panel-title">Bài nộp chờ duyệt</h5>
+                            <p class="dashboard-panel-copy mb-0">Xử lý nhanh các phiên bản mới nhất để không chặn tiến độ nhóm.</p>
+                        </div>
+                        <div class="card-body">
+                            <?php if (empty($pendingSubmissions)): ?>
+                                <p class="text-muted mb-0">Không có bài nộp nào đang chờ duyệt.</p>
+                            <?php else: ?>
+                                <?php foreach ($pendingSubmissions as $item): ?>
+                                    <div class="quick-list-item">
+                                        <div class="fw-semibold"><?= e($item['task_title']) ?></div>
+                                        <div class="small text-muted">Thành viên: <?= e($item['member_name']) ?></div>
+                                        <div class="small text-muted">
+                                            <?= e(submission_version_text($item['version_no'] ?? 1)) ?> - <?= e($item['file_name']) ?>
+                                        </div>
+                                        <div class="small text-muted mb-2">Nộp lúc: <?= e(format_datetime($item['submitted_at'])) ?></div>
+                                        <a href="<?= e(base_url('/leader/submissions/review.php?id=' . $item['id'])) ?>" class="btn btn-sm btn-warning">
+                                            Duyệt ngay
+                                        </a>
                                     </div>
-                                    <div class="small text-muted">Tiến độ trung binh: <?= e((int)round((float)($item['avg_progress'] ?? 0))) ?>%</div>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
+                    <div class="card section-card dashboard-panel">
+                        <div class="card-header bg-white border-0">
+                            <h5 class="dashboard-panel-title">Lịch sử hoạt động của team</h5>
+                            <p class="dashboard-panel-copy mb-0">Các thay đổi gần nhất để leader nắm mạch công việc của nhóm.</p>
+                        </div>
+                        <div class="card-body">
+                            <?php if (empty($teamTaskHistory)): ?>
+                                <p class="text-muted mb-0">Chưa có lịch sử task nào.</p>
+                            <?php else: ?>
+                                <?php foreach ($teamTaskHistory as $item): ?>
+                                    <div class="quick-list-item">
+                                        <div class="fw-semibold">
+                                            <?= e($item['event_title']) ?>
+                                            <span class="badge <?= e(task_history_badge($item['event_type'])) ?> ms-2">
+                                                <?= e(task_history_text($item['event_type'])) ?>
+                                            </span>
+                                        </div>
+                                        <div class="small text-muted">
+                                            <?= e($item['task_title']) ?><?= !empty($item['actor_name']) ? ' - ' . e($item['actor_name']) : '' ?>
+                                        </div>
+                                        <?php if (!empty($item['event_description'])): ?>
+                                            <div class="small"><?= e($item['event_description']) ?></div>
+                                        <?php endif; ?>
+                                        <div class="small text-muted"><?= e(format_datetime($item['created_at'])) ?></div>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="card section-card h-100">
-                    <div class="card-header bg-white border-0 pt-4 px-4">
-                        <h5 class="mb-0 fw-bold">Lịch sử task gần đây</h5>
-                    </div>
-                    <div class="card-body px-4">
-                        <?php if (empty($teamTaskHistory)): ?>
-                            <p class="text-muted mb-0">Chưa có lịch sử task nào.</p>
-                        <?php else: ?>
-                            <?php foreach ($teamTaskHistory as $item): ?>
-                                <div class="quick-list-item">
-                                    <div class="fw-semibold">
-                                        <?= e($item['event_title']) ?>
-                                        <span class="badge <?= e(task_history_badge($item['event_type'])) ?> ms-2">
-                                            <?= e(task_history_text($item['event_type'])) ?>
-                                        </span>
-                                    </div>
-                                    <div class="small text-muted">
-                                        <?= e($item['task_title']) ?><?= !empty($item['actor_name']) ? ' - ' . e($item['actor_name']) : '' ?>
-                                    </div>
-                                    <?php if (!empty($item['event_description'])): ?>
-                                        <div class="small"><?= e($item['event_description']) ?></div>
-                                    <?php endif; ?>
-                                    <div class="small text-muted"><?= e(format_datetime($item['created_at'])) ?></div>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row g-4 mt-1">
-            <div class="col-lg-4">
-                <div class="card section-card">
-                    <div class="card-header bg-white border-0 pt-4 px-4">
-                        <h5 class="mb-0 fw-bold">Công việc sắp đến hạn</h5>
-                    </div>
-                    <div class="card-body px-4">
-                        <?php if (empty($upcomingTasks)): ?>
-                            <p class="text-muted mb-0">Không có công việc nào.</p>
-                        <?php else: ?>
-                            <?php foreach ($upcomingTasks as $item): ?>
-                                <?php $isOverdue = is_task_overdue($item['status'], $item['due_date']); ?>
-                                <div class="quick-list-item <?= $isOverdue ? 'deadline-overdue' : 'deadline-soon' ?>">
-                                    <div class="fw-semibold"><?= e($item['title']) ?></div>
-                                    <div class="small text-muted">Thành viên: <?= e($item['member_name']) ?></div>
-                                    <div class="small text-muted">Deadline: <?= e(format_date($item['due_date'])) ?></div>
-                                    <div class="mt-1">
-                                        <span class="badge <?= e(task_status_badge($item['status'], $item['due_date'])) ?>">
-                                            <?= e(task_status_text($item['status'], $item['due_date'])) ?>
-                                        </span>
-                                        <span class="badge <?= e(priority_badge($item['priority'])) ?>">
-                                            <?= e(priority_text($item['priority'])) ?>
-                                        </span>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="card section-card">
-                    <div class="card-header bg-white border-0 pt-4 px-4">
-                        <h5 class="mb-0 fw-bold">Bài nộp chờ duyệt</h5>
-                    </div>
-                    <div class="card-body px-4">
-                        <?php if (empty($pendingSubmissions)): ?>
-                            <p class="text-muted mb-0">Không có bài nộp nào đang chờ duyệt.</p>
-                        <?php else: ?>
-                            <?php foreach ($pendingSubmissions as $item): ?>
-                                <div class="quick-list-item">
-                                    <div class="fw-semibold"><?= e($item['task_title']) ?></div>
-                                    <div class="small text-muted">Thành viên: <?= e($item['member_name']) ?></div>
-                                    <div class="small text-muted">
-                                        <?= e(submission_version_text($item['version_no'] ?? 1)) ?> - <?= e($item['file_name']) ?>
-                                    </div>
-                                    <div class="small text-muted mb-2">Nộp luc: <?= e(format_datetime($item['submitted_at'])) ?></div>
-                                    <a href="<?= e(base_url('/leader/submissions/review.php?id=' . $item['id'])) ?>" class="btn btn-sm btn-warning">
-                                        Duyệt ngay
-                                    </a>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
+            </section>
         </div>
     </main>
 

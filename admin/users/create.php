@@ -168,7 +168,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
     <main class="page-content">
         <?php require_once __DIR__ . '/../../includes/flash.php'; ?>
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="app-page-head d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h3 class="fw-bold mb-1">Thêm người dùng</h3>
                 <p class="text-muted mb-0">Tạo tài khoản mới cho hệ thống</p>
@@ -176,7 +176,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
             <a href="<?= e(base_url('/admin/users/index.php')) ?>" class="btn btn-outline-secondary">Quay lại</a>
         </div>
 
-        <div class="card section-card">
+        <div class="card section-card app-form-shell">
             <div class="card-body p-4">
                 <?php if (!empty($errors)): ?>
                     <div class="alert alert-danger">
@@ -188,7 +188,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                     </div>
                 <?php endif; ?>
 
-                <form method="POST" class="row g-3">
+                <form method="POST" class="row g-3 app-form-grid">
                     <?= csrf_field() ?>
                     <div class="col-md-6">
                         <label class="form-label">Họ tên</label>

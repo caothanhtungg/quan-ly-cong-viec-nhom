@@ -85,54 +85,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php require_once __DIR__ . '/../includes/flash.php'; ?>
 
 <div class="auth-shell">
-    <div class="auth-stage">
-        <section class="auth-showcase">
-            <div class="auth-showcase-badge">
-                <i class="bi bi-stars"></i>
-                Team workflow platform
-            </div>
-
-            <h1>Quan ly cong viec nhom mot cach ro rang va nhanh gon.</h1>
-            <p>
-                Theo doi task, bai nop, tien do va thong bao trong mot giao dien
-                gon, de doc va hop ly cho ca admin, leader va member.
-            </p>
-
-            <div class="auth-metrics">
-                <div class="auth-metric-card">
-                    <div class="auth-metric-value">3</div>
-                    <div class="auth-metric-label">Vai tro van hanh</div>
-                </div>
-                <div class="auth-metric-card">
-                    <div class="auth-metric-value">100%</div>
-                    <div class="auth-metric-label">Theo doi tien do</div>
-                </div>
-                <div class="auth-metric-card">
-                    <div class="auth-metric-value">24/7</div>
-                    <div class="auth-metric-label">Truy cap noi bo</div>
+    <div class="auth-grid">
+        <section class="auth-intro">
+            <div class="auth-brand">
+                <div class="auth-brand-mark">TM</div>
+                <div class="auth-brand-copy">
+                    <div class="auth-brand-name">Task Management</div>
+                    <div class="auth-brand-subtitle">Internal workflow system</div>
                 </div>
             </div>
 
-            <div class="auth-feature-list">
-                <div class="auth-feature-item">
-                    <span class="auth-feature-icon"><i class="bi bi-check2-circle"></i></span>
-                    <div>
-                        <strong>Phan quyen ro rang</strong>
-                        <div>Admin, leader va member co luong thao tac rieng.</div>
+            <div class="auth-intro-copy">
+                <div class="auth-overline">Workspace access</div>
+                <h1>Dang nhap de tiep tuc lam viec.</h1>
+                <p>
+                    Mot cua vao gon va ro rang cho admin, leader va member.
+                    Sau khi dang nhap, he thong se dua ban den dung dashboard theo vai tro.
+                </p>
+            </div>
+
+            <div class="auth-intro-list">
+                <div class="auth-intro-item">
+                    <span class="auth-intro-icon"><i class="bi bi-grid-1x2"></i></span>
+                    <div class="auth-intro-text">
+                        <strong>Di den dung dashboard</strong>
+                        <span>Moi vai tro duoc dua vao dung khu vuc thao tac ngay sau khi dang nhap.</span>
                     </div>
                 </div>
-                <div class="auth-feature-item">
-                    <span class="auth-feature-icon"><i class="bi bi-kanban"></i></span>
-                    <div>
-                        <strong>Theo doi task theo trang thai</strong>
-                        <div>Tu chua bat dau den hoan thanh va duyet bai nop.</div>
+
+                <div class="auth-intro-item">
+                    <span class="auth-intro-icon"><i class="bi bi-kanban"></i></span>
+                    <div class="auth-intro-text">
+                        <strong>Theo doi task va bai nop</strong>
+                        <span>Cong viec, tien do va review duoc gom trong cung mot he thong.</span>
                     </div>
                 </div>
-                <div class="auth-feature-item">
-                    <span class="auth-feature-icon"><i class="bi bi-bell"></i></span>
-                    <div>
-                        <strong>Thong bao va lich su</strong>
-                        <div>Khong bo lo task sap den han hoac bai nop can xu ly.</div>
+
+                <div class="auth-intro-item">
+                    <span class="auth-intro-icon"><i class="bi bi-shield-check"></i></span>
+                    <div class="auth-intro-text">
+                        <strong>Dang nhap an toan</strong>
+                        <span>Phien lam viec moi duoc tao lai sau khi xac thuc thanh cong.</span>
                     </div>
                 </div>
             </div>
@@ -140,52 +133,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <section class="auth-panel">
             <div class="auth-card">
-                <div class="auth-card-head">
-                    <div class="auth-card-mark">TM</div>
-                    <div>
-                        <div class="auth-card-kicker">Welcome back</div>
-                        <h2>Dang nhap he thong</h2>
-                    </div>
+                <div class="auth-card-heading">
+                    <div class="auth-card-kicker">Secure sign in</div>
+                    <h2>Dang nhap</h2>
+                    <p class="auth-card-copy">
+                        Su dung ten dang nhap hoac email de vao khu vuc lam viec cua ban.
+                    </p>
                 </div>
-
-                <p class="auth-card-copy">
-                    Su dung ten dang nhap hoac email de truy cap vao khu vuc lam viec cua ban.
-                </p>
 
                 <?php if ($error !== ''): ?>
                     <div class="alert alert-danger auth-inline-alert"><?= e($error) ?></div>
                 <?php endif; ?>
 
+                <div class="auth-role-row">
+                    <span class="auth-role-pill">Admin</span>
+                    <span class="auth-role-pill">Leader</span>
+                    <span class="auth-role-pill">Member</span>
+                </div>
+
                 <form method="POST" class="auth-form">
                     <?= csrf_field() ?>
 
                     <div class="auth-form-group">
-                        <label class="form-label auth-label">Ten dang nhap hoac email</label>
+                        <label for="login_username" class="form-label auth-label">Ten dang nhap hoac email</label>
                         <div class="auth-input-wrap">
                             <span class="auth-input-icon"><i class="bi bi-person"></i></span>
                             <input
+                                id="login_username"
                                 type="text"
                                 name="username"
                                 class="form-control auth-input"
                                 value="<?= e($loginInput) ?>"
                                 placeholder="Nhap tai khoan cua ban"
+                                autocomplete="username"
+                                autofocus
                                 required
                             >
                         </div>
                     </div>
 
                     <div class="auth-form-group">
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                            <label class="form-label auth-label mb-0">Mat khau</label>
-                            <span class="auth-helper-text">Bao mat bang password hash</span>
+                        <div class="auth-label-row">
+                            <label for="login_password" class="form-label auth-label mb-0">Mat khau</label>
+                            <span class="auth-helper-text">Bat buoc</span>
                         </div>
                         <div class="auth-input-wrap">
                             <span class="auth-input-icon"><i class="bi bi-shield-lock"></i></span>
                             <input
+                                id="login_password"
                                 type="password"
                                 name="password"
                                 class="form-control auth-input"
                                 placeholder="Nhap mat khau"
+                                autocomplete="current-password"
                                 data-password-input
                                 required
                             >
@@ -195,14 +195,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary auth-submit-btn">
-                        <span>Dang nhap</span>
-                        <i class="bi bi-arrow-right-circle"></i>
-                    </button>
+                    <button type="submit" class="btn btn-primary auth-submit-btn">Dang nhap</button>
                 </form>
 
                 <div class="auth-footnote">
-                    He thong phu hop cho team hoc tap va do an co phan chia task, nop bai va duyet bai.
+                    Neu ban chua co tai khoan, lien he admin de duoc cap quyen truy cap vao team.
                 </div>
             </div>
         </section>
