@@ -7,15 +7,15 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 app-modal">
             <div class="modal-header border-0">
-                <h5 class="modal-title">Xac nhan thao tac</h5>
+                <h5 class="modal-title">Xác nhận thao tác</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p class="mb-0" id="globalConfirmMessage">Ban co chac muon thuc hien thao tac nay khong?</p>
+                <p class="mb-0" id="globalConfirmMessage">Bạn có chắc muốn thực hiện thao tác này không?</p>
             </div>
             <div class="modal-footer border-0">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Huy</button>
-                <button type="button" id="globalConfirmAction" class="btn btn-danger">Dong y</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" id="globalConfirmAction" class="btn btn-danger">Đồng ý</button>
             </div>
         </div>
     </div>

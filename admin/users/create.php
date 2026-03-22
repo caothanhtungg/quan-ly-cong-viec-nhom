@@ -227,8 +227,8 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                     <div class="col-md-6">
                         <label class="form-label">Trạng thái</label>
                         <select name="status" class="form-select">
-                            <option value="active" <?= $formData['status'] === 'active' ? 'selected' : '' ?>>Active</option>
-                            <option value="inactive" <?= $formData['status'] === 'inactive' ? 'selected' : '' ?>>Inactive</option>
+                            <option value="active" <?= $formData['status'] === 'active' ? 'selected' : '' ?>><?= e(user_status_text('active')) ?></option>
+                            <option value="inactive" <?= $formData['status'] === 'inactive' ? 'selected' : '' ?>><?= e(user_status_text('inactive')) ?></option>
                         </select>
                     </div>
 

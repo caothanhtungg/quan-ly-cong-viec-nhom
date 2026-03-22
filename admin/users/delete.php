@@ -8,7 +8,7 @@ $conn = getConnection();
 $currentUser = current_user();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !is_valid_csrf_token($_POST['csrf_token'] ?? '')) {
-    set_flash('danger', 'Yeu cau không hợp lệ.');
+    set_flash('danger', 'Yêu cầu không hợp lệ.');
     redirect(base_url('/admin/users/index.php'));
 }
 
@@ -85,9 +85,9 @@ if ($hasRelatedData) {
                 'deactivate',
                 'user',
                 $id,
-                'Chuyen người dùng sang inactive: ' . $user['full_name']
+                'Chuyển người dùng sang trạng thái ngưng hoạt động: ' . $user['full_name']
             );
-            set_flash('warning', 'Người dùng đã có dữ liệu liên quan, hệ thống đã chuyển sang trạng thái inactive.');
+            set_flash('warning', 'Người dùng đã có dữ liệu liên quan, hệ thống đã chuyển sang trạng thái ngưng hoạt động.');
         } else {
             sqlsrv_rollback($conn);
             set_flash('danger', 'Không thể xử lý người dùng này.');

@@ -86,24 +86,24 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                     </div>
 
                     <div class="col-md-3">
-                        <label class="form-label">Action type</label>
+                        <label class="form-label">Loại thao tác</label>
                         <select name="action_type" class="form-select">
                             <option value="">Tất cả</option>
                             <?php foreach ($actionTypes as $type): ?>
                                 <option value="<?= e($type) ?>" <?= $actionType === $type ? 'selected' : '' ?>>
-                                    <?= e($type) ?>
+                                    <?= e(activity_action_text($type)) ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
 
                     <div class="col-md-3">
-                        <label class="form-label">Entity type</label>
+                        <label class="form-label">Loại đối tượng</label>
                         <select name="entity_type" class="form-select">
                             <option value="">Tất cả</option>
                             <?php foreach ($entityTypes as $type): ?>
                                 <option value="<?= e($type) ?>" <?= $entityType === $type ? 'selected' : '' ?>>
-                                    <?= e($type) ?>
+                                    <?= e(entity_type_text($type)) ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -111,7 +111,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
 
                     <div class="col-12 d-flex gap-2">
                         <button type="submit" class="btn btn-primary">Lọc dữ liệu</button>
-                        <a href="<?= e(base_url('/admin/logs/index.php')) ?>" class="btn btn-outline-secondary">Reset</a>
+                        <a href="<?= e(base_url('/admin/logs/index.php')) ?>" class="btn btn-outline-secondary">Đặt lại</a>
                     </div>
                 </form>
             </div>
@@ -132,9 +132,9 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                                     <th>Thời gian</th>
                                     <th>Người thực hiện</th>
                                     <th>Vai trò</th>
-                                    <th>Action</th>
-                                    <th>Entity</th>
-                                    <th>Entity ID</th>
+                                    <th>Thao tác</th>
+                                    <th>Đối tượng</th>
+                                    <th>Mã đối tượng</th>
                                     <th>Mô tả</th>
                                 </tr>
                             </thead>
@@ -146,8 +146,8 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                                         <td>
                                             <span class="badge text-bg-dark"><?= e(strtoupper($log['actor_role'])) ?></span>
                                         </td>
-                                        <td><?= e($log['action_type']) ?></td>
-                                        <td><?= e($log['entity_type']) ?></td>
+                                        <td><?= e(activity_action_text($log['action_type'])) ?></td>
+                                        <td><?= e(entity_type_text($log['entity_type'])) ?></td>
                                         <td><?= e($log['entity_id']) ?></td>
                                         <td><?= e($log['description']) ?></td>
                                     </tr>

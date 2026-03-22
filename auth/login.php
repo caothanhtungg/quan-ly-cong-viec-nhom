@@ -11,14 +11,14 @@ $loginInput = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!is_valid_csrf_token($_POST['csrf_token'] ?? '')) {
-        $error = 'Phien lam viec khong hop le. Vui long thu lai.';
+        $error = 'Phiên làm việc không hợp lệ. Vui lòng thử lại.';
     }
 
     $loginInput = trim($_POST['username'] ?? '');
     $password = trim($_POST['password'] ?? '');
 
     if ($error === '' && ($loginInput === '' || $password === '')) {
-        $error = 'Vui long nhap ten dang nhap hoac email va mat khau.';
+        $error = 'Vui lòng nhập tên đăng nhập hoặc email và mật khẩu.';
     } elseif ($error === '') {
         $conn = getConnection();
 
@@ -30,16 +30,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = sqlsrv_query($conn, $sql, $params);
 
         if ($stmt === false) {
-            $error = 'Loi truy van du lieu.';
+            $error = 'Lỗi truy vấn dữ liệu.';
         } else {
             $user = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
 
             if (!$user) {
-                $error = 'Tai khoan khong ton tai.';
+                $error = 'Tài khoản không tồn tại.';
             } elseif ($user['status'] !== 'active') {
-                $error = 'Tai khoan da bi khoa.';
+                $error = 'Tài khoản đã bị khóa.';
             } elseif (!password_verify($password, $user['password_hash'])) {
-                $error = 'Mat khau khong dung.';
+                $error = 'Mật khẩu không đúng.';
             } else {
                 session_regenerate_id(true);
                 unset($_SESSION['csrf_token']);
@@ -58,10 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'login',
                     'auth',
                     (int)$user['id'],
-                    'Dang nhap vao he thong'
+                    'Đăng nhập vào hệ thống'
                 );
 
-                set_flash('success', 'Dang nhap thanh cong.');
+                set_flash('success', 'Đăng nhập thành công.');
                 redirect_by_role($user['role']);
             }
         }
@@ -72,13 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Dang nhap - Task Manager</title>
+    <title>Đăng nhập - Task Management</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="<?= e(asset_url('/assets/img/hhcc-mark.svg')) ?>">
     <link href="<?= e(asset_url('/assets/css/style.css')) ?>" rel="stylesheet">
 </head>
 <body class="app-body auth-page">
@@ -88,56 +89,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="auth-grid">
         <section class="auth-intro">
             <div class="auth-brand">
-                <div class="auth-brand-mark">TM</div>
+                <img
+                    src="<?= e(asset_url('/assets/img/hhcc-logo.svg')) ?>"
+                    alt="Logo HHCC"
+                    class="auth-brand-logo"
+                >
                 <div class="auth-brand-copy">
                     <div class="auth-brand-name">Task Management</div>
-                    <div class="auth-brand-subtitle">Internal workflow system</div>
+                    <div class="auth-brand-subtitle">Đồ án Điện toán đám mây</div>
                 </div>
             </div>
 
             <div class="auth-intro-copy">
-                <div class="auth-overline">Workspace access</div>
-                <h1>Dang nhap de tiep tuc lam viec.</h1>
+                <div class="auth-overline">Truy cập hệ thống</div>
+                <h1>Đăng nhập<br><span>để tiếp tục.</span></h1>
                 <p>
-                    Mot cua vao gon va ro rang cho admin, leader va member.
-                    Sau khi dang nhap, he thong se dua ban den dung dashboard theo vai tro.
+                    Hệ thống quản lý công việc theo nhóm được xây dựng phục vụ đồ án
+                    Điện toán đám mây của sinh viên Cao Thanh Tùng, Trường Đại học Kinh doanh và Công nghệ Hà Nội.
                 </p>
             </div>
 
-            <div class="auth-intro-list">
-                <div class="auth-intro-item">
-                    <span class="auth-intro-icon"><i class="bi bi-grid-1x2"></i></span>
-                    <div class="auth-intro-text">
-                        <strong>Di den dung dashboard</strong>
-                        <span>Moi vai tro duoc dua vao dung khu vuc thao tac ngay sau khi dang nhap.</span>
-                    </div>
-                </div>
+            <div class="auth-role-row">
+                <span class="auth-role-pill">Đồ án Điện toán đám mây</span>
+                <span class="auth-role-pill">Cao Thanh Tùng</span>
+                <span class="auth-role-pill">MSSV 2924111392</span>
+            </div>
 
-                <div class="auth-intro-item">
-                    <span class="auth-intro-icon"><i class="bi bi-kanban"></i></span>
-                    <div class="auth-intro-text">
-                        <strong>Theo doi task va bai nop</strong>
-                        <span>Cong viec, tien do va review duoc gom trong cung mot he thong.</span>
-                    </div>
-                </div>
-
-                <div class="auth-intro-item">
-                    <span class="auth-intro-icon"><i class="bi bi-shield-check"></i></span>
-                    <div class="auth-intro-text">
-                        <strong>Dang nhap an toan</strong>
-                        <span>Phien lam viec moi duoc tao lai sau khi xac thuc thanh cong.</span>
-                    </div>
-                </div>
+            <div class="auth-intro-note">
+                <div class="auth-intro-note-title">Sinh viên Cao Thanh Tùng</div>
+                <p class="mb-0">
+                    Trường Đại học Kinh doanh và Công nghệ Hà Nội<br>
+                    Mã sinh viên: 2924111392
+                </p>
             </div>
         </section>
 
         <section class="auth-panel">
             <div class="auth-card">
                 <div class="auth-card-heading">
-                    <div class="auth-card-kicker">Secure sign in</div>
-                    <h2>Dang nhap</h2>
+                    <div class="auth-card-eyebrow">Lối vào hệ thống</div>
+                    <h2>Đăng nhập</h2>
                     <p class="auth-card-copy">
-                        Su dung ten dang nhap hoac email de vao khu vuc lam viec cua ban.
+                        Nhập thông tin tài khoản để vào hệ thống.
                     </p>
                 </div>
 
@@ -145,17 +138,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="alert alert-danger auth-inline-alert"><?= e($error) ?></div>
                 <?php endif; ?>
 
-                <div class="auth-role-row">
-                    <span class="auth-role-pill">Admin</span>
-                    <span class="auth-role-pill">Leader</span>
-                    <span class="auth-role-pill">Member</span>
-                </div>
-
                 <form method="POST" class="auth-form">
                     <?= csrf_field() ?>
 
                     <div class="auth-form-group">
-                        <label for="login_username" class="form-label auth-label">Ten dang nhap hoac email</label>
+                        <label for="login_username" class="form-label auth-label">Tên đăng nhập hoặc email</label>
                         <div class="auth-input-wrap">
                             <span class="auth-input-icon"><i class="bi bi-person"></i></span>
                             <input
@@ -164,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 name="username"
                                 class="form-control auth-input"
                                 value="<?= e($loginInput) ?>"
-                                placeholder="Nhap tai khoan cua ban"
+                                placeholder="Nhập tài khoản của bạn"
                                 autocomplete="username"
                                 autofocus
                                 required
@@ -174,8 +161,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="auth-form-group">
                         <div class="auth-label-row">
-                            <label for="login_password" class="form-label auth-label mb-0">Mat khau</label>
-                            <span class="auth-helper-text">Bat buoc</span>
+                            <label for="login_password" class="form-label auth-label mb-0">Mật khẩu</label>
+                            <span class="auth-helper-text">Bắt buộc</span>
                         </div>
                         <div class="auth-input-wrap">
                             <span class="auth-input-icon"><i class="bi bi-shield-lock"></i></span>
@@ -184,22 +171,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 type="password"
                                 name="password"
                                 class="form-control auth-input"
-                                placeholder="Nhap mat khau"
+                                placeholder="Nhập mật khẩu"
                                 autocomplete="current-password"
                                 data-password-input
                                 required
                             >
-                            <button type="button" class="auth-password-toggle" data-password-toggle aria-label="Show password">
+                            <button type="button" class="auth-password-toggle" data-password-toggle aria-label="Hiển thị mật khẩu">
                                 <i class="bi bi-eye"></i>
                             </button>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary auth-submit-btn">Dang nhap</button>
+                    <button type="submit" class="btn btn-primary auth-submit-btn">Đăng nhập</button>
                 </form>
 
                 <div class="auth-footnote">
-                    Neu ban chua co tai khoan, lien he admin de duoc cap quyen truy cap vao team.
+                    Nếu bạn chưa có tài khoản, liên hệ admin để được cấp quyền truy cập.
                 </div>
             </div>
         </section>

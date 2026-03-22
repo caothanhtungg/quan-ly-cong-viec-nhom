@@ -2,14 +2,14 @@
 $user = current_user();
 $role = $user['role'] ?? '';
 $activeMenu = $activeMenu ?? '';
-$navTitle = 'Workspace';
+$navTitle = 'Khu làm việc';
 
 if ($role === 'admin') {
-    $navTitle = 'Admin panel';
+    $navTitle = 'Bảng quản trị';
 } elseif ($role === 'leader') {
-    $navTitle = 'Leader tools';
+    $navTitle = 'Công cụ trưởng nhóm';
 } elseif ($role === 'member') {
-    $navTitle = 'Member area';
+    $navTitle = 'Khu vực thành viên';
 }
 
 if (!function_exists('render_sidebar_item')) {
@@ -30,13 +30,17 @@ if (!function_exists('render_sidebar_item')) {
 <aside class="sidebar">
     <div class="sidebar-brand-row">
         <a class="sidebar-brand text-decoration-none" href="<?= e(base_url('/')) ?>">
-            <span class="sidebar-brand-mark">TM</span>
-            <span>
-                <span class="sidebar-brand-title d-block">Task Manager</span>
-                <small class="sidebar-brand-subtitle">Team workflow</small>
+            <img
+                src="<?= e(asset_url('/assets/img/hhcc-mark.svg')) ?>"
+                alt="Logo HHCC"
+                class="sidebar-brand-logo"
+            >
+            <span class="sidebar-brand-copy">
+                <span class="sidebar-brand-title d-block">HHCC</span>
+                <small class="sidebar-brand-subtitle">Task Management</small>
             </span>
         </a>
-        <button type="button" class="sidebar-close d-lg-none js-sidebar-close" aria-label="Close navigation">
+        <button type="button" class="sidebar-close d-lg-none js-sidebar-close" aria-label="Đóng điều hướng">
             <i class="bi bi-x-lg"></i>
         </button>
     </div>
@@ -45,27 +49,27 @@ if (!function_exists('render_sidebar_item')) {
 
     <?php if ($role === 'admin'): ?>
         <ul class="nav flex-column sidebar-menu">
-            <?php render_sidebar_item(base_url('/admin/dashboard.php'), 'admin_dashboard', 'Dashboard', 'bi-grid-1x2-fill', $activeMenu); ?>
-            <?php render_sidebar_item(base_url('/admin/users/index.php'), 'admin_users', 'Quan ly nguoi dung', 'bi-people-fill', $activeMenu); ?>
-            <?php render_sidebar_item(base_url('/admin/teams/index.php'), 'admin_teams', 'Quan ly nhom', 'bi-diagram-3-fill', $activeMenu); ?>
-            <?php render_sidebar_item(base_url('/admin/tasks/index.php'), 'admin_tasks', 'Quan ly cong viec', 'bi-kanban-fill', $activeMenu); ?>
-            <?php render_sidebar_item(base_url('/admin/logs/index.php'), 'admin_logs', 'Nhat ky hoat dong', 'bi-clock-history', $activeMenu); ?>
-            <?php render_sidebar_item(base_url('/profile.php'), 'profile', 'Ho so ca nhan', 'bi-person-badge-fill', $activeMenu); ?>
+            <?php render_sidebar_item(base_url('/admin/dashboard.php'), 'admin_dashboard', 'Bảng điều khiển', 'bi-grid-1x2-fill', $activeMenu); ?>
+            <?php render_sidebar_item(base_url('/admin/users/index.php'), 'admin_users', 'Quản lý người dùng', 'bi-people-fill', $activeMenu); ?>
+            <?php render_sidebar_item(base_url('/admin/teams/index.php'), 'admin_teams', 'Quản lý nhóm', 'bi-diagram-3-fill', $activeMenu); ?>
+            <?php render_sidebar_item(base_url('/admin/tasks/index.php'), 'admin_tasks', 'Quản lý công việc', 'bi-kanban-fill', $activeMenu); ?>
+            <?php render_sidebar_item(base_url('/admin/logs/index.php'), 'admin_logs', 'Nhật ký hoạt động', 'bi-clock-history', $activeMenu); ?>
+            <?php render_sidebar_item(base_url('/profile.php'), 'profile', 'Hồ sơ cá nhân', 'bi-person-badge-fill', $activeMenu); ?>
         </ul>
     <?php elseif ($role === 'leader'): ?>
         <ul class="nav flex-column sidebar-menu">
-            <?php render_sidebar_item(base_url('/leader/dashboard.php'), 'leader_dashboard', 'Dashboard', 'bi-speedometer2', $activeMenu); ?>
-            <?php render_sidebar_item(base_url('/leader/team.php'), 'leader_team', 'Nhom cua toi', 'bi-people-fill', $activeMenu); ?>
-            <?php render_sidebar_item(base_url('/leader/tasks/index.php'), 'leader_tasks', 'Quan ly cong viec', 'bi-list-check', $activeMenu); ?>
-            <?php render_sidebar_item(base_url('/leader/submissions/index.php'), 'leader_submissions', 'Bai nop', 'bi-inbox-fill', $activeMenu); ?>
-            <?php render_sidebar_item(base_url('/profile.php'), 'profile', 'Ho so ca nhan', 'bi-person-badge-fill', $activeMenu); ?>
+            <?php render_sidebar_item(base_url('/leader/dashboard.php'), 'leader_dashboard', 'Bảng điều khiển', 'bi-speedometer2', $activeMenu); ?>
+            <?php render_sidebar_item(base_url('/leader/team.php'), 'leader_team', 'Nhóm của tôi', 'bi-people-fill', $activeMenu); ?>
+            <?php render_sidebar_item(base_url('/leader/tasks/index.php'), 'leader_tasks', 'Quản lý công việc', 'bi-list-check', $activeMenu); ?>
+            <?php render_sidebar_item(base_url('/leader/submissions/index.php'), 'leader_submissions', 'Bài nộp', 'bi-inbox-fill', $activeMenu); ?>
+            <?php render_sidebar_item(base_url('/profile.php'), 'profile', 'Hồ sơ cá nhân', 'bi-person-badge-fill', $activeMenu); ?>
         </ul>
     <?php elseif ($role === 'member'): ?>
         <ul class="nav flex-column sidebar-menu">
-            <?php render_sidebar_item(base_url('/member/dashboard.php'), 'member_dashboard', 'Dashboard', 'bi-grid-fill', $activeMenu); ?>
-            <?php render_sidebar_item(base_url('/member/tasks/index.php'), 'member_tasks', 'Cong viec cua toi', 'bi-check2-square', $activeMenu); ?>
-            <?php render_sidebar_item(base_url('/member/submissions/index.php'), 'member_submissions', 'Bai nop cua toi', 'bi-folder2-open', $activeMenu); ?>
-            <?php render_sidebar_item(base_url('/profile.php'), 'profile', 'Ho so ca nhan', 'bi-person-badge-fill', $activeMenu); ?>
+            <?php render_sidebar_item(base_url('/member/dashboard.php'), 'member_dashboard', 'Bảng điều khiển', 'bi-grid-fill', $activeMenu); ?>
+            <?php render_sidebar_item(base_url('/member/tasks/index.php'), 'member_tasks', 'Công việc của tôi', 'bi-check2-square', $activeMenu); ?>
+            <?php render_sidebar_item(base_url('/member/submissions/index.php'), 'member_submissions', 'Bài nộp của tôi', 'bi-folder2-open', $activeMenu); ?>
+            <?php render_sidebar_item(base_url('/profile.php'), 'profile', 'Hồ sơ cá nhân', 'bi-person-badge-fill', $activeMenu); ?>
         </ul>
     <?php endif; ?>
 </aside>

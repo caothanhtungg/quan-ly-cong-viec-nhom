@@ -94,7 +94,7 @@ require_once __DIR__ . '/../../includes/sidebar.php';
 
                     <div class="col-md-2 d-flex align-items-end gap-2">
                         <button type="submit" class="btn btn-primary w-100">Lọc</button>
-                        <a href="<?= e(base_url('/member/tasks/index.php')) ?>" class="btn btn-outline-secondary w-100">Reset</a>
+                        <a href="<?= e(base_url('/member/tasks/index.php')) ?>" class="btn btn-outline-secondary w-100">Đặt lại</a>
                     </div>
                 </form>
             </div>

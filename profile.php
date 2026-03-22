@@ -82,7 +82,7 @@ require_once __DIR__ . '/includes/sidebar.php';
                         <p><strong>Username:</strong> <?= e($dbUser['username']) ?></p>
                         <p><strong>Email:</strong> <?= e($dbUser['email']) ?></p>
                         <p><strong>Vai trò:</strong> <?= e(strtoupper($dbUser['role'])) ?></p>
-                        <p><strong>Trạng thái:</strong> <?= e($dbUser['status']) ?></p>
+                        <p><strong>Trạng thái:</strong> <?= e(user_status_text($dbUser['status'])) ?></p>
                         <p><strong>Nhóm:</strong> <?= e($dbUser['team_name'] ?? 'Chưa có') ?></p>
                         <p class="mb-0"><strong>Ngày tạo:</strong> <?= e(format_datetime($dbUser['created_at'])) ?></p>
                     </div>

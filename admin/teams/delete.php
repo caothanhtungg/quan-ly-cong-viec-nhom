@@ -7,7 +7,7 @@ require_role(['admin']);
 $conn = getConnection();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !is_valid_csrf_token($_POST['csrf_token'] ?? '')) {
-    set_flash('danger', 'Yeu cau không hợp lệ.');
+    set_flash('danger', 'Yêu cầu không hợp lệ.');
     redirect(base_url('/admin/teams/index.php'));
 }
 

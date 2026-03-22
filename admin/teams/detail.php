@@ -120,11 +120,9 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                                                 <td><?= e($member['username']) ?></td>
                                                 <td><?= e($member['email']) ?></td>
                                                 <td>
-                                                    <?php if ($member['status'] === 'active'): ?>
-                                                        <span class="badge text-bg-success">Active</span>
-                                                    <?php else: ?>
-                                                        <span class="badge text-bg-secondary">Inactive</span>
-                                                    <?php endif; ?>
+                                                    <span class="badge <?= e(user_status_badge($member['status'])) ?>">
+                                                        <?= e(user_status_text($member['status'])) ?>
+                                                    </span>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -159,7 +157,11 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                                             <tr>
                                                 <td><?= e($task['title']) ?></td>
                                                 <td><?= e($task['member_name']) ?></td>
-                                                <td><?= e($task['status']) ?></td>
+                                                <td>
+                                                    <span class="badge <?= e(task_status_badge($task['status'], $task['due_date'])) ?>">
+                                                        <?= e(task_status_text($task['status'], $task['due_date'])) ?>
+                                                    </span>
+                                                </td>
                                                 <td><?= e($task['progress_percent']) ?>%</td>
                                                 <td><?= e(format_datetime($task['due_date'])) ?></td>
                                             </tr>

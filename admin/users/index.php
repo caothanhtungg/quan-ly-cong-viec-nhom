@@ -88,14 +88,14 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                         <label class="form-label">Trạng thái</label>
                         <select name="status" class="form-select">
                             <option value="">Tất cả</option>
-                            <option value="active" <?= $status === 'active' ? 'selected' : '' ?>>Active</option>
-                            <option value="inactive" <?= $status === 'inactive' ? 'selected' : '' ?>>Inactive</option>
+                            <option value="active" <?= $status === 'active' ? 'selected' : '' ?>><?= e(user_status_text('active')) ?></option>
+                            <option value="inactive" <?= $status === 'inactive' ? 'selected' : '' ?>><?= e(user_status_text('inactive')) ?></option>
                         </select>
                     </div>
 
                     <div class="col-md-2 d-flex align-items-end gap-2">
                         <button type="submit" class="btn btn-primary w-100">Lọc</button>
-                        <a href="<?= e(base_url('/admin/users/index.php')) ?>" class="btn btn-outline-secondary w-100">Reset</a>
+                        <a href="<?= e(base_url('/admin/users/index.php')) ?>" class="btn btn-outline-secondary w-100">Đặt lại</a>
                     </div>
                 </form>
             </div>
@@ -140,11 +140,9 @@ require_once __DIR__ . '/../../includes/sidebar.php';
                                             </span>
                                         </td>
                                         <td>
-                                            <?php if ($item['status'] === 'active'): ?>
-                                                <span class="badge text-bg-success">Active</span>
-                                            <?php else: ?>
-                                                <span class="badge text-bg-secondary">Inactive</span>
-                                            <?php endif; ?>
+                                            <span class="badge <?= e(user_status_badge($item['status'])) ?>">
+                                                <?= e(user_status_text($item['status'])) ?>
+                                            </span>
                                         </td>
                                         <td><?= e($item['team_name'] ?? 'Chưa có') ?></td>
                                         <td><?= e(format_datetime($item['created_at'])) ?></td>

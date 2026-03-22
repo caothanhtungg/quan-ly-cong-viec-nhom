@@ -4,7 +4,7 @@ require_once __DIR__ . '/../config/database.php';
 
 require_role(['member']);
 
-$pageTitle = 'Dashboard Member';
+$pageTitle = 'Bảng điều khiển thành viên';
 $activeMenu = 'member_dashboard';
 $user = current_user();
 $conn = getConnection();
@@ -213,10 +213,10 @@ require_once __DIR__ . '/../includes/sidebar.php';
             <section class="dashboard-hero">
                 <div class="dashboard-hero-grid">
                     <div class="dashboard-hero-copy">
-                        <span class="dashboard-kicker">Member Workspace</span>
+                        <span class="dashboard-kicker">Không gian thành viên</span>
                         <h3>Giữ nhịp công việc cá nhân</h3>
                         <p>
-                            Xin chào, <?= e($user['full_name']) ?>. Dashboard này ưu tiên việc đọc nhanh khối lượng đang mở,
+                            Xin chào, <?= e($user['full_name']) ?>. Bảng điều khiển này ưu tiên việc đọc nhanh khối lượng đang mở,
                             deadline gần và các bài nộp cần làm lại để bạn tập trung đúng chỗ.
                         </p>
                         <div class="dashboard-hero-actions">

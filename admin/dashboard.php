@@ -4,7 +4,7 @@ require_once __DIR__ . '/../config/database.php';
 
 require_role(['admin']);
 
-$pageTitle = 'Dashboard Admin';
+$pageTitle = 'Bảng điều khiển Admin';
 $activeMenu = 'admin_dashboard';
 $user = current_user();
 $conn = getConnection();
@@ -160,7 +160,7 @@ require_once __DIR__ . '/../includes/header.php';
             <section class="dashboard-hero">
                 <div class="dashboard-hero-grid">
                     <div class="dashboard-hero-copy">
-                        <span class="dashboard-kicker">Admin Workspace</span>
+                        <span class="dashboard-kicker">Không gian quản trị</span>
                         <h3>Điều phối toàn bộ hệ thống</h3>
                         <p>
                             Xin chào, <?= e($user['full_name']) ?>. Màn hình này gom chỉ số vận hành,

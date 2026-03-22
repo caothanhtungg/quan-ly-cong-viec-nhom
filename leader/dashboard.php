@@ -4,7 +4,7 @@ require_once __DIR__ . '/../config/database.php';
 
 require_role(['leader']);
 
-$pageTitle = 'Dashboard Leader';
+$pageTitle = 'Bảng điều khiển trưởng nhóm';
 $activeMenu = 'leader_dashboard';
 $user = current_user();
 $conn = getConnection();
@@ -22,10 +22,10 @@ if (empty($user['team_id'])) {
                 <section class="dashboard-hero">
                     <div class="dashboard-hero-grid">
                         <div class="dashboard-hero-copy">
-                            <span class="dashboard-kicker">Leader Workspace</span>
+                            <span class="dashboard-kicker">Không gian trưởng nhóm</span>
                             <h3>Bạn chưa có nhóm để điều phối</h3>
                             <p>
-                                Tài khoản hiện chưa được gán vào team nào, nên chưa thể hiển thị tiến độ công việc,
+                                Tài khoản hiện chưa được gán vào nhóm nào, nên chưa thể hiển thị tiến độ công việc,
                                 bài nộp hay hiệu suất thành viên.
                             </p>
                         </div>
@@ -46,7 +46,7 @@ if (empty($user['team_id'])) {
                     </div>
                     <div class="card-body">
                         <p class="mb-0 text-muted">
-                            Sau khi được gán team, dashboard sẽ tự hiển thị số liệu thành viên, tiến độ task và bài nộp cần duyệt.
+                            Sau khi được gán nhóm, bảng điều khiển sẽ tự hiển thị số liệu thành viên, tiến độ task và bài nộp cần duyệt.
                         </p>
                     </div>
                 </div>
@@ -277,10 +277,10 @@ require_once __DIR__ . '/../includes/sidebar.php';
             <section class="dashboard-hero">
                 <div class="dashboard-hero-grid">
                     <div class="dashboard-hero-copy">
-                        <span class="dashboard-kicker">Leader Workspace</span>
+                        <span class="dashboard-kicker">Không gian trưởng nhóm</span>
                         <h3>Giữ nhịp vận hành của nhóm</h3>
                         <p>
-                            Xin chào, <?= e($user['full_name']) ?>. Dashboard này ưu tiên ba việc:
+                            Xin chào, <?= e($user['full_name']) ?>. Bảng điều khiển này ưu tiên ba việc:
                             nhìn tiến độ chung, xác định task cần can thiệp và xử lý nhanh các bài nộp đang chờ duyệt.
                         </p>
                         <div class="dashboard-hero-actions">
@@ -310,7 +310,7 @@ require_once __DIR__ . '/../includes/sidebar.php';
             <section class="dashboard-stat-grid">
                 <div class="card stat-card">
                     <div class="card-body">
-                        <div class="stat-label">Thành viên active</div>
+                        <div class="stat-label">Thành viên hoạt động</div>
                         <div class="stat-value"><?= e($memberCount) ?></div>
                     </div>
                 </div>

@@ -299,6 +299,26 @@ function task_status_badge($status, $dueDate = null)
     return $map[$status] ?? 'text-bg-secondary';
 }
 
+function user_status_text($status)
+{
+    $map = [
+        'active' => 'Hoạt động',
+        'inactive' => 'Ngưng hoạt động',
+    ];
+
+    return $map[$status] ?? $status;
+}
+
+function user_status_badge($status)
+{
+    $map = [
+        'active' => 'text-bg-success',
+        'inactive' => 'text-bg-secondary',
+    ];
+
+    return $map[$status] ?? 'text-bg-secondary';
+}
+
 function priority_text($priority)
 {
     $map = [
@@ -341,6 +361,39 @@ function review_status_badge($status)
 
     return $map[$status] ?? 'text-bg-secondary';
 }
+
+function activity_action_text($actionType)
+{
+    $map = [
+        'login' => 'Đăng nhập',
+        'logout' => 'Đăng xuất',
+        'create' => 'Tạo mới',
+        'update' => 'Cập nhật',
+        'delete' => 'Xóa',
+        'deactivate' => 'Ngưng hoạt động',
+        'update_progress' => 'Cập nhật tiến độ',
+        'submit' => 'Nộp bài',
+        'comment' => 'Bình luận',
+        'approve_submission' => 'Duyệt bài nộp',
+        'reject_submission' => 'Từ chối bài nộp',
+    ];
+
+    return $map[$actionType] ?? $actionType;
+}
+
+function entity_type_text($entityType)
+{
+    $map = [
+        'auth' => 'Xác thực',
+        'user' => 'Người dùng',
+        'team' => 'Nhóm',
+        'task' => 'Công việc',
+        'submission' => 'Bài nộp',
+    ];
+
+    return $map[$entityType] ?? $entityType;
+}
+
 function is_task_due_soon($status, $dueDate, $days = 2)
 {
     if ($status === 'completed') {

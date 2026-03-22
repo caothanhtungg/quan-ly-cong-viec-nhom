@@ -14,7 +14,7 @@ $redirectTo = normalize_internal_path(
 );
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    set_flash('danger', 'Yeu cau không hợp lệ.');
+    set_flash('danger', 'Yêu cầu không hợp lệ.');
     redirect($redirectTo);
 }
 
@@ -63,5 +63,5 @@ log_activity(
     'Thêm bình luận cho task: ' . ($task['title'] ?? ('ID ' . $taskId))
 );
 
-set_flash('success', 'Da them bình luận.');
+set_flash('success', 'Đã thêm bình luận.');
 redirect($redirectTo);
