@@ -286,7 +286,7 @@ require_once __DIR__ . '/../includes/sidebar.php';
                 </div>
             </section>
 
-            <section class="dashboard-main-grid">
+            <section class="dashboard-main-grid dashboard-main-grid-member">
                 <div class="dashboard-stack">
                     <div class="card section-card dashboard-panel">
                         <div class="card-header bg-white border-0">
